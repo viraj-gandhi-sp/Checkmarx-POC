@@ -36,11 +36,13 @@ jobs:
         checkmarx_username: ${{ secrets.CHECKMARX_USER }} # To be stored in GitHub Secrets.
         checkmarx_password: ${{ secrets.CHECKMARX_PASSWORD }} # To be stored in GitHub Secrets.
         checkmarx_client_secret: ${{ secrets.CHECKMARX_CLIENT_SECRET }} # To be stored in GitHub Secrets.
+        # zip-exclude: \.git/.*
         # exclude-folders: "*git*"
         break_build: false
         scanners: sast
         bug_tracker: Sarif
-        params: --namespace=${{ github.repository_owner }} --repo-name=${{ github.event.repository.name }} --branch=${{ github.ref }} --exclude-folders=\.git/.*
+        # params: --namespace=${{ github.repository_owner }} --repo-name=${{ github.event.repository.name }} --branch=${{ github.ref }} --exclude-folders=\.git/.*
+        params: --namespace=${{ github.repository_owner }} --repo-name=${{ github.event.repository.name }} --branch=${{ github.ref }} --cx-flow.zip-exclude=\.git/.* --checkmarx.settings-override=true --checkmarx.exclude-folders="!**/.git/**/*" 
     - name: Upload SARIF file
       uses: github/codeql-action/upload-sarif@v1
       with:
